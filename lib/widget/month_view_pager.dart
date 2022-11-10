@@ -70,6 +70,8 @@ class _MonthViewPagerState extends State<MonthViewPager>
         }
         //月份的变化
         DateModel dateModel = configuration.monthList[position];
+        configuration.nowYear = dateModel.year;
+        configuration.nowMonth = dateModel.month;
         configuration.monthChangeListeners.forEach((listener) {
           listener(dateModel.year, dateModel.month);
         });

@@ -115,7 +115,7 @@ class _MonthViewState extends State<MonthView>
 
             /// 多选
             case CalendarSelectedMode.multiSelect:
-              if(calendarProvider.selectedDateList != null){
+              if (calendarProvider.selectedDateList != null) {
                 if (calendarProvider.selectedDateList!.contains(dateModel)) {
                   dateModel.isSelected = true;
                 } else {
@@ -125,9 +125,8 @@ class _MonthViewState extends State<MonthView>
               break;
 
             /// 选择开始和结束 中间的自动选择
-
             case CalendarSelectedMode.mutltiStartToEndSelect:
-              if(calendarProvider.selectedDateList != null){
+              if (calendarProvider.selectedDateList != null) {
                 if (calendarProvider.selectedDateList!.contains(dateModel)) {
                   dateModel.isSelected = true;
                 } else {
@@ -149,6 +148,7 @@ class _MonthViewState extends State<MonthView>
           return ItemContainer(
             dateModel: dateModel,
             key: ObjectKey(dateModel),
+            expand: true,
             clickCall: () {
               setState(() {});
 //              if (configuration.selectMode ==
@@ -178,8 +178,14 @@ class ItemContainer extends StatefulWidget {
   final DateModel dateModel;
 
   final GestureTapCallback? clickCall;
-  const ItemContainer({Key? key, required this.dateModel, this.clickCall})
-      : super(key: key);
+  final bool expand;
+
+  const ItemContainer({
+    Key? key,
+    required this.dateModel,
+    this.clickCall,
+    required this.expand,
+  }) : super(key: key);
 
   @override
   ItemContainerState createState() => ItemContainerState();
@@ -191,12 +197,14 @@ class ItemContainerState extends State<ItemContainer> {
   late CalendarProvider calendarProvider;
 
   late ValueNotifier<bool> isSelected;
+  late bool expand;
 
   @override
   void initState() {
     super.initState();
     dateModel = widget.dateModel;
     isSelected = ValueNotifier(dateModel.isSelected);
+    expand = widget.expand;
   }
 
   /**
@@ -208,7 +216,6 @@ class ItemContainerState extends State<ItemContainer> {
         The following assertion was thrown while handling a gesture:
         setState() called after dispose()
      */
-    v ??= false;
     if (mounted) {
       setState(() {
         dateModel.isSelected = v;
@@ -221,14 +228,14 @@ class ItemContainerState extends State<ItemContainer> {
   }
 
   void _notifiCationUnCalendarSelect(DateModel? element) {
-    if (element !=null && configuration.unCalendarSelect != null) {
-      configuration.unCalendarSelect!(element);
+    if (element != null && configuration.unCalendarSelect != null) {
+      configuration.unCalendarSelect!(element, expand);
     }
   }
 
   void _notifiCationCalendarSelect(DateModel? element) {
-    if (element !=null &&configuration.calendarSelect != null) {
-      configuration.calendarSelect!(element);
+    if (element != null && configuration.calendarSelect != null) {
+      configuration.calendarSelect!(element, expand);
     }
   }
 
@@ -295,14 +302,14 @@ class ItemContainerState extends State<ItemContainer> {
               calendarProvider.lastClickItemState?.refreshItem(false);
               calendarProvider.lastClickItemState = this;
             }
-            if(calendarProvider.selectedDateList!.contains(dateModel)){
+            if (calendarProvider.selectedDateList!.contains(dateModel)) {
               // 如果已经选择就执行取消
               _notifiCationUnCalendarSelect(calendarProvider.selectDateModel);
               dateModel.isSelected = false;
               calendarProvider.selectedDateList?.clear();
               calendarProvider.selectDateModel = null;
               _notifiCationUnCalendarSelect(dateModel);
-            }else{
+            } else {
               _notifiCationUnCalendarSelect(calendarProvider.selectDateModel);
               dateModel.isSelected = true;
               calendarProvider.selectDateModel = dateModel;
@@ -327,7 +334,7 @@ class ItemContainerState extends State<ItemContainer> {
                 return;
               }
               DateTime t1, t2;
-              if(d2 != null){
+              if (d2 != null) {
                 if (d2.getDateTime().isAfter(dateModel.getDateTime())) {
                   t2 = d2.getDateTime();
                   t1 = dateModel.getDateTime();
@@ -340,7 +347,8 @@ class ItemContainerState extends State<ItemContainer> {
                       ?.add(DateModel.fromDateTime(t1));
                   t1 = t1.add(Duration(days: 1));
                 }
-                calendarProvider.selectedDateList?.add(DateModel.fromDateTime(t1));
+                calendarProvider.selectedDateList
+                    ?.add(DateModel.fromDateTime(t1));
               }
             } else {
               /// 加入已经选择了多个 则进行取消操作
@@ -367,7 +375,8 @@ class ItemContainerState extends State<ItemContainer> {
 
         refreshItem(!this.dateModel.isSelected);
       },
-      child: configuration.dayWidgetBuilder!(dateModel),
+      child: configuration.dayWidgetBuilder!(
+          dateModel, calendarProvider.expandStatus.value),
     );
   }
 

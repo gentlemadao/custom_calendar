@@ -131,6 +131,7 @@ class _WeekViewState extends State<WeekView> with AutomaticKeepAliveClientMixin{
 
           return ItemContainer(
               dateModel: dateModel,
+              expand: false,
               key: ObjectKey(dateModel),
               clickCall: () {
                 setState(() {});

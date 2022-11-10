@@ -108,7 +108,7 @@ class CalendarProvider extends ChangeNotifier {
     return index;
   }
 
-  late ValueNotifier<bool> expandStatus; //当前展开状态
+  ValueNotifier<bool> expandStatus = ValueNotifier(false); //当前展开状态
 
   //配置类也放这里吧，这样的话，所有子树，都可以拿到配置的信息
   late CalendarConfiguration calendarConfiguration;

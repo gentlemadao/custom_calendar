@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       nowMonth: DateTime.now().month,
       offset: 1,
     )
-      ..addOnCalendarSelectListener((dateModel) {
+      ..addOnCalendarSelectListener((dateModel, expand) {
         _selectedModels.add(dateModel);
         DateTime day = DateTime(dateModel.year, dateModel.month, dateModel.day);
         print("dayInWeek : ${day.weekday}");
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _selectDate = _selectedModels.toString();
         });
       })
-      ..addOnCalendarUnSelectListener((dateModel) {
+      ..addOnCalendarUnSelectListener((dateModel, expand) {
         LogUtil.log(
             TAG: '_selectedModels', message: _selectedModels.toString());
         LogUtil.log(TAG: 'dateModel', message: dateModel.toString());
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     calendar = CalendarViewWidget(
       key: _globalKey,
       calendarController: controller,
-      dayWidgetBuilder: (DateModel model) {
+      dayWidgetBuilder: (DateModel model, bool expand) {
         double wd = (MediaQuery.of(context).size.width - 20) / 7;
         bool _isSelected = model.isSelected;
         if (_isSelected &&
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               : Colors.white)
                           : Colors.black38),
                 ),
-                if(model.extraData != null)
+                if (model.extraData != null)
                   Container(
                     color: Colors.green,
                     width: 5,
@@ -130,21 +130,18 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
       },
-      boxDecoration: BoxDecoration(color: Colors.white),
+      boxDecoration: const BoxDecoration(color: Colors.white),
       itemSize: 60,
     );
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.addExpandChangeListener((value) {
         /// 添加改变 月视图和 周视图的监听
-        _isMonthSelected = value;
         setState(() {});
       });
     });
 
     super.initState();
   }
-
-  bool _isMonthSelected = false;
 
   String _selectDate = '';
 
@@ -182,13 +179,13 @@ class _MyHomePageState extends State<MyHomePage> {
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.start,
         children: <Widget>[
-          Text('请选择mode'),
+          const Text('请选择mode'),
           Wrap(
             spacing: 10,
             runSpacing: 10,
             children: <Widget>[
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   '单选',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -200,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   '多选',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -212,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   '多选 选择开始和结束',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -236,13 +233,13 @@ class _MyHomePageState extends State<MyHomePage> {
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.start,
         children: <Widget>[
-          Text('月视图和周视图'),
+          const Text('月视图和周视图'),
           Wrap(
             spacing: 10,
             runSpacing: 10,
             children: <Widget>[
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   '月视图',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -254,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               ElevatedButton(
-                child: Text(
+                child: const Text(
                   '周视图',
                   style: TextStyle(color: Colors.white),
                 ),

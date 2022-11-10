@@ -29,6 +29,7 @@ class CalendarConfiguration {
   //日历显示的当前的年份和月份
   int nowYear;
   int nowMonth;
+
   // 周视图需要
   int? nowDay;
 
@@ -96,25 +97,26 @@ class CalendarConfiguration {
       required this.maxYearMonth,
       required this.nowYear,
       required this.nowMonth,
+      this.nowDay,
       this.minSelectYear,
       this.minSelectMonth,
       this.minSelectDay,
       this.maxSelectYear,
       this.maxSelectMonth,
       this.maxSelectDay,
-       this.defaultSelectedDateList,
+      this.defaultSelectedDateList,
       this.selectDateModel,
       this.maxMultiSelectCount,
       required this.extraDataMap,
-       this.monthList = const [],
-       this.weekList = const [],
-       this.monthController,
-       this.weekController,
+      this.monthList = const [],
+      this.weekList = const [],
+      this.monthController,
+      this.weekController,
       this.verticalSpacing = 10,
-        this.itemSize = 50,
+      this.itemSize = 50,
       required this.showMode,
-        this.padding = EdgeInsets.zero,
-       this.margin = EdgeInsets.zero,
+      this.padding = EdgeInsets.zero,
+      this.margin = EdgeInsets.zero,
       this.offset = 0});
 
   @override

@@ -63,8 +63,10 @@ class _WeekViewPagerState extends State<WeekViewPager>
           DateModel firstDayOfWeek = configuration.weekList[position];
           int currentMonth = firstDayOfWeek.month;
 //          周视图的变化
+          configuration.nowYear = firstDayOfWeek.year;
+          configuration.nowMonth = firstDayOfWeek.month;
           configuration.weekChangeListeners.forEach((listener) {
-            listener(firstDayOfWeek.year, firstDayOfWeek.month);
+            listener(firstDayOfWeek.year, firstDayOfWeek.month, firstDayOfWeek.day);
           });
           if (lastMonth != currentMonth) {
             LogUtil.log(
